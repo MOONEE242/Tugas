@@ -1,0 +1,38 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+
+# Secrets / credentials
+.env
+config/secrets.yaml
+*.key
+
+# Data (large, regenerated from MT5, never commit market dumps)
+data/raw/*
+data/processed/*
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+*.parquet
+*.csv
+
+# Models / training artifacts
+models/xgboost/*.json
+models/xgboost/*.pkl
+models/lstm/*.pth
+models/gru/*.pth
+models/transformer/*.pth
+*.pth
+*.pkl
+mlruns/
+
+# Logs
+logs/
+*.log
+
+# OS / editor
+.DS_Store
+.vscode/
+.idea/

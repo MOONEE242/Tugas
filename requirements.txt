@@ -1,0 +1,32 @@
+# Core
+numpy>=1.26
+pandas>=2.1
+scipy>=1.11
+pyyaml>=6.0
+pyarrow>=14.0        # parquet engine for pandas
+
+# ML / DL
+scikit-learn>=1.4
+xgboost>=2.0
+torch>=2.2           # deep learning (LSTM/GRU/CNN/Transformer) - phase 6
+
+# Backtesting / optimization
+vectorbt>=0.26
+plotly<6            # vectorbt's plotly integration breaks on plotly>=6's new schema
+optuna>=3.5
+
+# MT5 integration (Windows only - the MetaTrader5 IPC bridge does not exist
+# on Linux/macOS; installing on those platforms is a no-op/failure and code
+# in data/mt5_connector.py + execution/mt5_executor.py degrades gracefully)
+MetaTrader5>=5.0.45; sys_platform == "win32"
+
+# Utilities
+python-dotenv>=1.0
+tqdm>=4.66
+
+# Optional (Phase 12+)
+# fastapi>=0.110
+# uvicorn>=0.29
+# psycopg2-binary>=2.9
+# streamlit>=1.32
+# mlflow>=2.11
