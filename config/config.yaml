@@ -1,0 +1,127 @@
+# =============================================================================
+# AI Trading Ecosystem - central configuration
+# Semua parameter strategi/risk/execution dikontrol dari sini, jangan hardcode
+# di dalam kode.
+# =============================================================================
+
+mt5:
+  # Kredensial diambil dari environment variable (lihat README), jangan isi di sini.
+  login_env: MT5_LOGIN
+  password_env: MT5_PASSWORD
+  server_env: MT5_SERVER
+  timeout_ms: 10000
+  terminal_path: null   # null = pakai instalasi default MT5 di PATH
+
+symbols:
+  - XAUUSD
+  - EURUSD
+
+timeframes:
+  - M1
+  - M5
+  - M15
+  - H1
+  - H4
+  - D1
+
+# timeframe eksekusi utama untuk auto-entry (lihat execution/auto_entry.py)
+execution_timeframe: M15
+bias_timeframe: H4
+structure_timeframe: H1
+
+# -----------------------------------------------------------------------------
+# Sesi & kill zone (jam dalam UTC)
+# -----------------------------------------------------------------------------
+sessions:
+  asia:
+    start_hour: 0
+    end_hour: 8
+  london:
+    start_hour: 7
+    end_hour: 16
+  new_york:
+    start_hour: 12
+    end_hour: 21
+
+killzones:
+  london_open:
+    start_hour: 7
+    end_hour: 10
+  ny_open:
+    start_hour: 12
+    end_hour: 15
+
+# -----------------------------------------------------------------------------
+# Parameter strategy engine
+# -----------------------------------------------------------------------------
+ict:
+  swing_lookback: 2          # bar kiri/kanan untuk fractal swing high/low
+  fvg_min_size_atr: 0.10     # FVG minimal 10% dari ATR biar tidak noise
+  liquidity_sweep_lookback: 20
+  order_block_lookback: 15
+
+msrn:
+  enabled: true
+  min_score: 0.5
+
+alchemist:
+  enabled: true
+  min_score: 0.5
+
+snar:
+  enabled: true
+  min_score: 0.5
+
+confluence:
+  # bobot masing-masing expert signal saat digabung jadi confluence_score
+  weights:
+    ict: 0.35
+    msrn: 0.20
+    alchemist: 0.20
+    snar: 0.15
+    session: 0.10
+
+# -----------------------------------------------------------------------------
+# Label / target (triple-barrier)
+# -----------------------------------------------------------------------------
+labeling:
+  atr_period: 14
+  tp_atr_multiple: 2.0
+  sl_atr_multiple: 1.0
+  max_holding_bars: 48   # batas waktu barrier (vertical barrier)
+
+# -----------------------------------------------------------------------------
+# Model / signal thresholds
+# -----------------------------------------------------------------------------
+model:
+  min_confidence: 0.80        # AI confidence filter (0.0 - 1.0)
+  min_rr: 2.0                 # minimum reward:risk yang diterima
+  classes: [NO_TRADE, BUY, SELL]
+
+# -----------------------------------------------------------------------------
+# Risk engine
+# -----------------------------------------------------------------------------
+risk:
+  account_currency: USD
+  risk_per_trade_pct: 0.25      # % equity per trade
+  max_daily_loss_pct: 2.0       # stop membuka trade baru kalau tercapai
+  max_total_open_risk_pct: 1.0  # total risk semua posisi terbuka
+  max_open_positions: 5
+  max_trades_per_day: null      # null = tidak dibatasi jumlah, dibatasi risk
+  min_lot: 0.01
+  max_lot: 5.0
+  duplicate_signal_cooldown_bars: 1   # cegah entry ulang di candle yang sama
+
+# -----------------------------------------------------------------------------
+# Backtest
+# -----------------------------------------------------------------------------
+backtest:
+  initial_cash: 10000
+  fee_pct: 0.0002        # spread/komisi perkiraan (0.02%)
+  slippage_pct: 0.0001
+
+walk_forward:
+  train_years: 3
+  val_months: 6
+  test_months: 6
+  step_months: 6
